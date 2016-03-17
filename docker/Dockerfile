@@ -1,6 +1,6 @@
 FROM glassfish:4.1-jdk8
 
-COPY target/clickCount.war /
+COPY ../target/clickCount.war /
 COPY start.sh /
 
 ENV REDIS_HOST redis
