@@ -1,0 +1,24 @@
+<html>
+<head>
+    <script src="static/js/jquery-2.1.4.min.js"></script>
+</head>
+
+<body>
+<div>
+    <b>click count : </b><span id="count"></span> <br/><br/>
+    <input id="clickButton" type="button" value="click"/>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $.get("rest/click", function (data) {
+            $('#count').text(data);
+        });
+        $('#clickButton').click(function () {
+            $.post("rest/click", function (data) {
+                $('#count').text(data);
+            });
+        })
+    });
+</script>
