@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  jenkins:
+    image: clickcount/jenkins
+    container_name: "jenkins-master"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+      - 8580:8080
+      - 50000:50000
+  jenkins-cli:
+    image: clickcount/jenkins-cli
+    container_name: "jenkins-client"
+    depends_on:
+      - jenkins
+    links:
+      - jenkins:jenkins
