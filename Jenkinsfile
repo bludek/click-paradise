@@ -7,6 +7,6 @@ def mvn(args) {
 stage 'Dev'
 node {
     checkout scm
-    mvn '-o clean package'
+    mvn 'clean package'
     dir('target') {stash name: 'war', includes: 'x.war'}
 }
