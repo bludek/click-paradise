@@ -1,6 +1,18 @@
 version: '2'
 
 services:
+  web-uat:
+    image: docker
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      REDIS_HOST: "52.58.80.248"
+  web-prod:
+    image: docker
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      REDIS_HOST: "52.58.81.99"
   jenkins:
     image: clickcount/jenkins
     container_name: "jenkins-master"
@@ -12,7 +24,5 @@ services:
   jenkins-cli:
     image: clickcount/jenkins-cli
     container_name: "jenkins-client"
-    depends_on:
-      - jenkins
     links:
       - jenkins:jenkins
