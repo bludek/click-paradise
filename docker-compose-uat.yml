@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  app:
+    image: 10.100.192.200:5000/clickparadise/clickcount:staging
+    ports:
+      - 8080:8080
+    environment:
+      - SERVICE_NAME=clickcount
+      - REDIS_HOST=52.58.80.248
+  app-blue:
+    environment:
+      - SERVICE_NAME=clickcount-blue
+    extends:
+      service: app
+  app-green:
+    environment:
+      - SERVICE_NAME=clickcount-green
+    extends:
+      service: app
