@@ -6,6 +6,9 @@ services:
     ports:
       - 8080
       - 4848
+    labels:
+      - "interlock.hostname=uat"
+      - "interlock.domain=clickcount.com"
     environment:
       - SERVICE_NAME=clickcount
       - REDIS_HOST=52.58.80.248
