@@ -10,8 +10,12 @@ public class Configuration {
     public final int redisConnectionTimeout;  //milliseconds
 
     public Configuration() {
-        redisHost = System.getProperty("redis_host", "redis");
-        redisPort = Integer.parseInt(System.getProperty("redis_port", "6379"));
-        redisConnectionTimeout = Integer.parseInt(System.getProperty("redis_connection_timeout", "2000"));
+        String host = System.getenv().get("REDIS_HOST");
+        String port = System.getenv().get("REDIS_PORT");
+        String timeout = System.getenv().get("redis_connection_timeout");
+
+        redisHost = host != null ? host : "redis";
+        redisPort = Integer.parseInt(port != null ? port : "6379");
+        redisConnectionTimeout = Integer.parseInt(timeout != null ? timeout : "2000");
     }
 }
