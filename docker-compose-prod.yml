@@ -5,6 +5,10 @@ services:
     image: 10.100.192.200:5000/clickparadise/clickcount:staging
     ports:
       - 8080
+    labels:
+      - "interlock.hostname=prod"
+      - "interlock.domain=clickparadise.fr"
+      - "interlock.port=8080"
     environment:
       - SERVICE_NAME=clickcount
       - REDIS_HOST=52.58.81.99
