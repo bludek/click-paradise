@@ -5,6 +5,7 @@ services:
     image: 10.100.192.200:5000/clickparadise/clickcount:staging
     ports:
       - 8080
+      - 4848
     labels:
       - "interlock.hostname=prod"
       - "interlock.domain=clickparadise.fr"
