@@ -1,0 +1,10 @@
+- name: Run registrator container
+  docker:
+    docker_api_version: 1.18
+    name: "{{ registrator_name }}"
+    image: gliderlabs/registrator
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    hostname: "{{ ansible_hostname }}"
+    command: -ip {{ facter_ipaddress_eth1 }} {{ registrator_protocol }}://{{ facter_ipaddress_eth1 }}:{{ registrator_port }}
+  tags: [registrator]

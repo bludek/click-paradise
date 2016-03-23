@@ -1,0 +1,8 @@
+home: /data/jenkins
+
+jobs: [
+   {
+     name: "click-count",
+     src: "clickcount-pipeline-config.xml"
+    }
+]

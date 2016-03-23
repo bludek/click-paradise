@@ -1,0 +1,13 @@
+- name: Run consul container
+  docker:
+    docker_api_version: 1.18
+    image: progrium/consul
+    name: consul
+    hostname: "{{ ansible_hostname }}"
+    state: reloaded
+    ports:
+      - 8300:8300
+      - 8301:8301
+      - 8301:8301/udp
+      - 8500:8500
+    command: -advertise {{ facter_ipaddress_eth1 }} {{ consul_extra }}

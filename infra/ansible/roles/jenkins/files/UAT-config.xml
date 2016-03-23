@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<slave>
+    <name>UAT</name>
+    <description></description>
+    <remoteFS>/data/jenkins_slaves/UAT</remoteFS>
+    <numExecutors>3</numExecutors>
+    <mode>EXCLUSIVE</mode>
+    <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
+    <launcher class="hudson.plugins.sshslaves.SSHLauncher" plugin="ssh-slaves@1.9">
+        <host>10.110.192.200</host>
+        <port>22</port>
+        <credentialsId>2ffb3000-9e0d-4eb9-ad5b-1c9fb209bc67</credentialsId>
+        <javaPath>/usr/bin/java</javaPath>
+        <maxNumRetries>0</maxNumRetries>
+        <retryWaitTime>0</retryWaitTime>
+    </launcher>
+    <label>uat uat-lb</label>
+    <nodeProperties/>
+    <userId>anonymous</userId>
+</slave>

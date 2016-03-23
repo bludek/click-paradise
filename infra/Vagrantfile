@@ -1,0 +1,49 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.synced_folder ".", "/vagrant"
+  # config.vm.synced_folder ".", "/vagrant", mount_options: ["dmode=700,fmode=600"]
+  config.vm.box = "ubuntu/trusty64"
+  # config.vm.box_url = "http://domain.com/path/to/above.box"
+  config.vm.provision "shell", path: "upgrade-kernel.sh"
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+  end
+  config.vm.define "jenkins" do |d|
+    d.vm.provision :shell, path: "ansible-install.sh"
+    d.vm.hostname = "jenkins"
+    d.vm.network "private_network", ip: "10.100.192.200"
+    d.vm.provider "virtualbox" do |v|
+        v.memory = 1024
+      end
+  end
+  config.vm.define "UAT-master" do |d|
+    d.vm.provision :shell, path: "ansible-install.sh"
+    d.vm.hostname = "UAT-master"
+    d.vm.network "private_network", ip: "10.110.192.200"
+  end
+  (1..2).each do |i|
+    config.vm.define "UAT-node-#{i}" do |d|
+      d.vm.hostname = "UAT-node-#{i}"
+      d.vm.network "private_network", ip: "10.110.192.10#{i}"
+    end
+  end
+  config.vm.define "PROD-master" do |d|
+    d.vm.provision :shell, path: "ansible-install.sh"
+    d.vm.hostname = "PROD-master"
+    d.vm.network "private_network", ip: "10.120.192.200"
+  end
+  (1..2).each do |i|
+    config.vm.define "PROD-node-#{i}" do |d|
+      d.vm.hostname = "PROD-node-#{i}"
+      d.vm.network "private_network", ip: "10.120.192.10#{i}"
+    end
+  end
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+  end
+end

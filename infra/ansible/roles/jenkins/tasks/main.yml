@@ -1,0 +1,96 @@
+- name: Run private registry
+  docker:
+    docker_api_version: 1.18
+    name: registry
+    image: registry:2
+    ports: 5000:5000
+    restart_policy: always
+  tags: [jenkins]
+
+- name: Create directories
+  file:
+    path: "{{ item.path }}"
+    mode: "{{ item.mode }}"
+    recurse: yes
+    state: directory
+  with_items:
+    - { path: '{{ home }}', mode: '0777' }
+    - { path: '/data/jenkins/nodes/UAT', mode: '0777' }
+    - { path: '/data/jenkins/nodes/PROD', mode: '0777' }
+  tags: [jenkins]
+
+- name: Check or build jenkins image
+  docker_image:
+    path: /vagrant/ansible/roles/jenkins/files
+    name: clickcount/jenkins
+    state: present
+  tags: [jenkins]
+
+- name: Run jenkins container
+  docker:
+    docker_api_version: 1.18
+    state: reloaded
+    name: jenkins-master
+    image: clickcount/jenkins
+    ports: 8080:8080
+    volumes:
+      - /data/jenkins:/var/jenkins_home
+      - /vagrant/.vagrant/machines:/machines
+      - /var/run/docker.sock:/var/run/docker.sock
+  register: container_result
+  tags: [jenkins]
+
+- pause: seconds=20
+  when: container_result|changed
+
+- name: Copy configuration files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0777
+  with_items:
+    - { src: "credentials.xml", dest: "/data/jenkins/credentials.xml" }
+    - { src: "config.xml", dest: "/data/jenkins/config.xml" }
+    - { src: "hudson.tasks.Maven.xml", dest: "/data/jenkins/hudson.tasks.Maven.xml" }
+    - { src: "UAT-config.xml", dest: "/data/jenkins/nodes/UAT/config.xml" }
+    - { src: "PROD-config.xml", dest: "/data/jenkins/nodes/PROD/config.xml" }
+  register: config_result
+  tags: [jenkins]
+
+- name: Restart jenkins container
+  docker:
+    docker_api_version: 1.18
+    name: jenkins-master
+    image: clickcount/jenkins
+    state: restarted
+  when: config_result|changed
+  tags: [jenkins]
+
+- pause: seconds=20
+  when: config_result|changed
+
+- name: Init jobs directories
+  file:
+    path: "{{ home }}/jobs/{{ item.name }}"
+    state: directory
+    mode: 0777
+  with_items: jobs
+  tags: [jenkins]
+
+- name: Init jenkins Jobs
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ home }}/jobs/{{ item.name }}/config.xml"
+    mode: 0777
+  with_items: jobs
+  register: jobs_result
+  tags: [jenkins]
+
+- name: Reload Jenkins
+  uri:
+    url: http://{{ ip }}:8080/reload
+    method: POST
+    status_code: 200,302
+  when: jobs_result|changed
+  ignore_errors: yes
+  tags: [jenkins]

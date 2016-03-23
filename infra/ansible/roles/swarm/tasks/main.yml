@@ -1,0 +1,23 @@
+
+- name: Swarm node is running
+  docker:
+    docker_api_version: 1.18
+    name: swarm-node
+    image: swarm
+    command: join --advertise={{ ip }}:2375 consul://{{ consul_server_ip }}:8500/swarm
+    env:
+      SERVICE_NAME: swarm-node
+  when: not swarm_master is defined
+  tags: [swarm]
+
+- name: Swarm master is running
+  docker:
+    docker_api_version: 1.18
+    name: swarm-master
+    image: swarm
+    ports: 4000:2375
+    command: manage consul://{{ consul_server_ip }}:8500/swarm
+    env:
+      SERVICE_NAME: swarm-master
+  when: swarm_master is defined
+  tags: [swarm]

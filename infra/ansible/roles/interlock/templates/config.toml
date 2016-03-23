@@ -1,0 +1,39 @@
+listenAddr = ":8080"
+dockerURL = "tcp://{{ swarm_master_ip }}:4000"
+EnableMetrics = true
+
+[[extensions]]
+name = "nginx"
+configPath = "/etc/conf/nginx.conf"
+pidPath = "/etc/conf/nginx.pid"
+BackendOverrideAddress = ""
+ConnectTimeout = 5000
+ServerTimeout = 10000
+ClientTimeout = 10000
+MaxConn = 1024
+Port = 80
+SyslogAddr = ""
+NginxPlusEnabled = false
+AdminUser = "admin"
+AdminPass = ""
+SSLCertPath = ""
+SSLCert = ""
+SSLPort = 0
+SSLOpts = ""
+User = "www-data"
+WorkerProcesses = 2
+RLimitNoFile = 65535
+ProxyConnectTimeout = 600
+ProxySendTimeout = 600
+ProxyReadTimeout = 600
+SendTimeout = 600
+
+# [[extensions]]
+# name = "haproxy"
+# configPath = "/etc/haproxy.cfg"
+# pidPath = "/etc/haproxy.pid"
+# backendOverrideAddress = ""
+# maxConn = 1024
+# port = 80
+# adminUser = "admin"
+# adminPass = "interlock"

@@ -1,0 +1,32 @@
+
+- name: Create directories
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    recurse: yes
+    state: directory
+  with_items:
+    - { path: "/data/interlock/{{ id }}", owner: 'vagrant' }
+  tags: [interlock]
+
+- name: Render interlock config
+  template:
+    src: "{{ item.src }}"
+    dest: "/data/interlock/{{ id }}/{{ item.name }}"
+    mode: 0644
+  with_items: configs
+  tags: [interlock]
+
+- name: Copy configuration files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+  with_items:
+    - { src: "docker-compose.yml", dest: "/data/interlock//{{ id }}/docker-compose.yml" }
+  register: config_result
+  tags: [interlock]
+
+- name: Run interlock with nginx proxy
+  shell: "cd /data/interlock/{{ id }}/ && docker-compose up -d"
+  tags: [interlock]

@@ -1,0 +1,18 @@
+[jenkins]
+10.100.192.200 docker_cfg=
+
+[interlock]
+10.110.192.200 swarm_master_ip=10.110.192.200 id="uat"
+10.120.192.200 swarm_master_ip=10.120.192.200 id="prod"
+
+[uat-master]
+10.110.192.200 swarm_master=true consul_extra="-server -bootstrap -ui-dir /ui" consul_server_ip=10.110.192.200 docker_cfg=docker-swarm-master.service
+
+[uat-node]
+10.110.192.10[1:2] swarm_master_ip=10.110.192.200 consul_extra="-join 10.110.192.200" consul_server_ip=10.110.192.200 docker_cfg=docker-swarm-node.service
+
+[prod-master]
+10.120.192.200 swarm_master=true consul_extra="-server -bootstrap -ui-dir /ui" consul_server_ip=10.120.192.200 docker_cfg=docker-swarm-master.service
+
+[prod-node]
+10.120.192.10[1:2] swarm_master_ip=10.120.192.200 consul_extra="-join 10.120.192.200" consul_server_ip=10.120.192.200 docker_cfg=docker-swarm-node.service

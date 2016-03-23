@@ -1,0 +1,21 @@
+- hosts: uat-master
+  remote_user: vagrant
+  serial: 1
+  sudo: yes
+  roles:
+    - java
+    - jenkins-node
+    - docker
+    - consul
+    - swarm
+    - registrator
+
+- hosts: uat-node
+  remote_user: vagrant
+  serial: 1
+  sudo: yes
+  roles:
+    - docker
+    - swarm
+    - consul
+    - registrator

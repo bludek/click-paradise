@@ -1,0 +1,7 @@
+
+configs: [
+   {
+     name: "config.toml",
+     src: "config.toml"
+    }
+]
