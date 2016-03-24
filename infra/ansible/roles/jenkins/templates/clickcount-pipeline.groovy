@@ -111,7 +111,6 @@ def waitFor(address) {
         def req = "curl -X GET ${address}/clickCount/rest/healthcheck".execute().text
         isUp = req == "ok"
         if (!isUp) {
-            println req
             def proc = "sleep 3".execute()
             proc.waitFor()
         }
