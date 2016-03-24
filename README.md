@@ -57,6 +57,13 @@ digraph G {
 
 
 ## How to use it ?
+
+#### Dependencies
+You'll need :
+> - vagrant
+> - virtualbox
+
+#### Running
 You can deploy the infrastructure by running :
 ```
 ./infra/infra.sh
