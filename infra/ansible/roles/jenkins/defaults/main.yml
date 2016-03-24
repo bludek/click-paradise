@@ -5,4 +5,8 @@ jobs: [
      name: "click-count",
      src: "clickcount-pipeline-config.xml"
     }
+    {
+     name: "deploy-production",
+     src: "production-pipeline-config.xml"
+    }
 ]
