@@ -14,7 +14,7 @@
     </org.jenkinsci.plugins.workflow.job.properties.BuildDiscarderProperty>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@1.15">
-    <script>{% include "production-pipeline.groovy" %}</script>
+    <script>{% include "release-pipeline.groovy" %}</script>
     <sandbox>false</sandbox>
   </definition>
   <triggers/>
