@@ -2,7 +2,7 @@ version: '2'
 
 services:
   app:
-    image: 10.100.192.200:5000/clickparadise/clickcount:staging
+    image: 10.100.192.200:5000/clickparadise/clickcount:production
     ports:
       - 8080
       - 4848
