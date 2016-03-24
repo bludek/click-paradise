@@ -37,7 +37,7 @@ Simulating
 
 Here is a sample schema of the Infrastructure.
 
-> <img src='http://g.gravizo.com/g?
+> ![Alt text](http://g.gravizo.com/g?
 digraph G {
    aize ="4,4";
    Jenkins [shape=box];
@@ -53,8 +53,7 @@ digraph G {
    Build -> Deploy
    Deploy -> UAT
    Deploy -> PROD [color=red,label="Approval"]
- }
-'/>
+ })
 
 
 ## How to use it ?
